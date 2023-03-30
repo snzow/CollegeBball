@@ -17,33 +17,42 @@ public class Main {
     static ArrayList<String> firstNames;
     static ArrayList<String> lastNames;
     static HashMap<String,Player> playerMap;
+    static HashMap<Team, Team> teamMap;
+    static ArrayList<Team> teamList;
 
     public static void main(String[] args) throws IOException {
 
         initializePlayerGen();
+        initializeTeams();
+
+        teamList.get(0).addPlayer(new Player("Aodhan","Bower",90,90));
+
+        teamList.get(0).addPlayer(new Player("Max","Ramstad"));
+        teamList.get(0).addPlayer(new Player("Charlie","Dennis"));
+        teamList.get(0).addPlayer(new Player("Malcolm","Bower"));
+        teamList.get(0).addPlayer(new Player("Charlotte","Houston",95,50));
+
+        for(int i = 1; i < teamList.size(); i++){
+            Team temp = teamList.get(i);
+            for(int j = 0; j < 5; j++){
+                temp.addPlayer(generatePlayer());
+            }
+        }
 
 
-        ArrayList<Player> teamOne = new ArrayList<Player>();
-        ArrayList<Player> teamTwo = new ArrayList<>();
-        teamOne.add(new Player("Aodhan","Bower",90,90));
-        teamOne.add(new Player("Max","Ramstad"));
-        teamOne.add(new Player("Charlie","Dennis"));
-        teamOne.add(new Player("Malcolm","Bower"));
-        teamOne.add(new Player("Charlotte","Houston",95,50));
-
-        teamTwo.add(generatePlayer());
-        teamTwo.add(generatePlayer());
-        teamTwo.add(generatePlayer());
-        teamTwo.add(generatePlayer());
-        teamTwo.add(generatePlayer());
 
 
-        Team teamA = new Team(teamOne);
-        Team teamB = new Team(teamTwo);
 
-        Game game = new Game(teamA,teamB);
 
-        game.playGame();
+
+        Game game = new Game(teamList.get(0),teamList.get(1));
+        Game game2 = new Game(teamList.get(2),teamList.get(3));
+
+        Team g1w = game.playGame();
+        Team g2w = game2.playGame();
+        Game finals = new Game(g1w,g2w);
+
+        finals.playGame();
     }
 
     public static int randomNumber(int max, int min){
@@ -62,6 +71,20 @@ public class Main {
         br = new BufferedReader(new FileReader("src/lastNames.txt"));
         while((name = br.readLine()) != null){
             lastNames.add(name);
+        }
+    }
+
+    public static void initializeTeams() throws IOException {
+        teamMap = new HashMap<>();
+        teamList = new ArrayList<>();
+
+        BufferedReader br = new BufferedReader(new FileReader("src/teams.txt"));
+        String city;
+        while((city = br.readLine()) != null){
+            String mascot = br.readLine();
+            Team temp = new Team(city,mascot);
+            teamMap.put(temp,temp);
+            teamList.add(temp);
         }
     }
 

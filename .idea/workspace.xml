@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce629026-6b84-44a7-b11b-564322883531" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/FirstNames.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LastNames.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/teams.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/players/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/players/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/players/PlayerStat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/players/PlayerStat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/teams/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/teams/Team.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,9 +43,15 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Aodhan/IdeaProjects/MobaSim"
+    "last_opened_file_path": "C:/Users/Aodhan/IdeaProjects/MobaSim",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Aodhan\IdeaProjects\CollegeBball\src" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -61,7 +62,7 @@
       <updated>1680131312307</updated>
       <workItem from="1680131317628" duration="5235000" />
       <workItem from="1680152030798" duration="1792000" />
-      <workItem from="1680192739698" duration="1493000" />
+      <workItem from="1680192739698" duration="2824000" />
     </task>
     <servers />
   </component>

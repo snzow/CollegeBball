@@ -29,7 +29,6 @@ public class Game {
     public Team playGame(){
         Boolean firstPossession = true;
         int counter = 0;
-        System.out.println("Game Start");
         while(timeLeft > 0){
             if(counter > 4){
                 counter = 0;
@@ -37,12 +36,10 @@ public class Game {
             if(firstPossession){
                 double tip = Main.randomNumber(0,1);
                 if(tip == 1){
-                    System.out.println("Home wins tip");
                     possession = home;
                     defense = away;
                 }
                 else{
-                    System.out.println("away wins tip");
                     possession = away;
                     defense = home;
 
@@ -103,11 +100,11 @@ public class Game {
             System.out.println(away.playerList.get(i).gameStats.toString());
         }
         if(homeScore > awayScore){
-            System.out.println("Home defeats away " + homeScore + " - " + awayScore);
+            System.out.println(home.toString()+ " defeat the " + away.toString() + " " + homeScore + " - " + awayScore);
             return home;
         }
         else{
-            System.out.println("Away defeats home " + awayScore + " - " + homeScore);
+            System.out.println(away.toString()+ " defeat the " + home.toString() + " "  + awayScore + " - " + homeScore);
             return away;
         }
 
@@ -124,6 +121,8 @@ public class Game {
             defense = away;
         }
     }
+
+
 
 
 
