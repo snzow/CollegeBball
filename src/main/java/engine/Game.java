@@ -61,6 +61,7 @@ public class Game {
                     }
                 }
                 else if(seed > 2){
+                    int reboundSeed = Main.randomNumber(1,5);
                     if(possession.playerList.get(counter).takeShot(defense.playerList.get(counter),3)){
                         if(possession.equals(home)){
                             homeScore += 3;
@@ -69,11 +70,28 @@ public class Game {
                             awayScore += 3;
                         }
                     }
-                    counter++;
-                    changePossession();
-                    break;
+                    else{
+                        if(reboundSeed > 3){
+                            defense.playerList.get(counter).rebound();
+                            changePossession();
+                            break;
+                        }
+                        else if(reboundSeed > 2){
+                            counter++;
+                            if(counter > 4){
+                                counter = 0;
+                            }
+                            possession.playerList.get(counter).rebound();
+                        }
+                        else{
+                            changePossession();
+                            break;
+                        }
+                    }
+
                 }
                 else{
+                    int reboundSeed = Main.randomNumber(1,5);
                     if(possession.playerList.get(counter).takeShot(defense.playerList.get(counter),2)){
                         if(possession.equals(home)){
                             homeScore += 2;
@@ -82,22 +100,36 @@ public class Game {
                             awayScore += 2;
                         }
                     }
-
-                    changePossession();
-                    counter++;
-                    break;
+                    if(reboundSeed > 3){
+                        defense.playerList.get(counter).rebound();
+                        changePossession();
+                        break;
+                    }
+                    else if(reboundSeed > 2){
+                        counter++;
+                        if(counter > 4){
+                            counter = 0;
+                        }
+                        possession.playerList.get(counter).rebound();
+                    }
+                    else{
+                        changePossession();
+                        break;
+                    }
                 }
             }
             timeLeft--;
 
         }
-        System.out.println("--Home--");
+        System.out.println("--" + home.toString() + "--");
         for(int i = 0; i < 5; i++){
             System.out.println(home.playerList.get(i).gameStats.toString());
+            home.playerList.get(i).gameStats.resetStats();
         }
-        System.out.println("--Away--");
+        System.out.println("--" + away.toString() + "--");
         for(int i = 0; i < 5; i++){
             System.out.println(away.playerList.get(i).gameStats.toString());
+            away.playerList.get(i).gameStats.resetStats();
         }
         if(homeScore > awayScore){
             System.out.println(home.toString()+ " defeat the " + away.toString() + " " + homeScore + " - " + awayScore);

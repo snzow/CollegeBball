@@ -30,7 +30,21 @@ public class PlayerStat {
 
     }
 
+    public void rebound(){
+        rebounds++;
+    }
+
+    public void resetStats(){
+        this.shots = 0;
+        this.madeShots = 0;
+        this.points = 0;
+        this.assists = 0;
+        this.steals = 0;
+        this.blocks = 0;
+        this.rebounds = 0;
+    }
+
     public String toString(){
-        return player.toString() + " " + madeShots + "/" + shots + " " + points + " pts";
+        return player.toString() + " " + madeShots + "/" + shots + " " + points + " pts " + rebounds + " rebounds";
     }
 }

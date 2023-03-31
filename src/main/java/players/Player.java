@@ -39,6 +39,10 @@ public class Player {
         return false;
     }
 
+    public void rebound(){
+        gameStats.rebound();
+    }
+
     public String toString(){
         return firstName + " " + lastName;
     }

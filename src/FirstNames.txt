@@ -3,7 +3,6 @@ John
 Michael
 Dave
 Will
-Rich
 Joe
 Tom
 Thomas
@@ -19,6 +18,16 @@ Drew
 Josh
 Brian
 Elijah
-Ban
+Ben
 Theo
 Jack
+Brandon
+Andrew
+Andre
+Kyle
+Anthony
+Jordan
+Jalen
+Trey
+Isaiah
+Caleb
