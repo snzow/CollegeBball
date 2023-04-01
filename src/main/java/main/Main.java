@@ -25,16 +25,21 @@ public class Main {
         initializePlayerGen();
         initializeTeams();
 
-        teamList.get(0).addPlayer(new Player("Aodhan","Bower",90,90));
+        teamList.get(0).addPlayer(new Player("Aodhan","Bower",100,90,90,90));
 
-        teamList.get(0).addPlayer(new Player("Max","Ramstad"));
+        teamList.get(0).addPlayer(new Player("Max","Ramstad",65,95,90,100));
         teamList.get(0).addPlayer(new Player("Charlie","Dennis"));
-        teamList.get(0).addPlayer(new Player("Malcolm","Bower"));
-        teamList.get(0).addPlayer(new Player("Charlotte","Houston",95,50));
+        teamList.get(0).addPlayer(new Player("Malcolm","Bower",80,85,85,100));
+        teamList.get(0).addPlayer(new Player("Charlotte","Houston",110,30,85,65));
+        teamList.get(0).addPlayer(generatePlayer());
+        teamList.get(0).addPlayer(generatePlayer());
+        teamList.get(0).addPlayer(generatePlayer());
+        teamList.get(0).addPlayer(generatePlayer());
+        teamList.get(0).addPlayer(generatePlayer());
 
         for(int i = 1; i < teamList.size(); i++){
             Team temp = teamList.get(i);
-            for(int j = 0; j < 5; j++){
+            for(int j = 0; j < temp.maxRosterSize; j++){
                 temp.addPlayer(generatePlayer());
             }
         }
@@ -55,7 +60,7 @@ public class Main {
         finals.playGame();
     }
 
-    public static int randomNumber(int max, int min){
+    public static int randomNumber(int min, int max){
         return (int)Math.floor(Math.random() *(max - min + 1) + min);
     }
 

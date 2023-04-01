@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce629026-6b84-44a7-b11b-564322883531" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/highSchools.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mascots.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FirstNames.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/FirstNames.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LastNames.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/LastNames.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/players/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/players/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/players/PlayerStat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/players/PlayerStat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/teams/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/teams/Team.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +53,26 @@
       <recent name="C:\Users\Aodhan\IdeaProjects\CollegeBball\src" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="main.Main" />
+      <module name="CollegeBball" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -66,7 +84,8 @@
       <workItem from="1680131317628" duration="5235000" />
       <workItem from="1680152030798" duration="1792000" />
       <workItem from="1680192739698" duration="4589000" />
-      <workItem from="1680294928840" duration="2349000" />
+      <workItem from="1680294928840" duration="2490000" />
+      <workItem from="1680377025809" duration="5356000" />
     </task>
     <servers />
   </component>
