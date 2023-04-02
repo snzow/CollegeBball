@@ -28,7 +28,7 @@ public class Main {
         teamList.get(0).addPlayer(new Player("Aodhan","Bower",100,90,90,90));
 
         teamList.get(0).addPlayer(new Player("Max","Ramstad",65,95,90,100));
-        teamList.get(0).addPlayer(new Player("Charlie","Dennis"));
+        teamList.get(0).addPlayer(new Player("Charlie","Dennis",40,100,80,75));
         teamList.get(0).addPlayer(new Player("Malcolm","Bower",80,85,85,100));
         teamList.get(0).addPlayer(new Player("Charlotte","Houston",110,30,85,65));
         teamList.get(0).addPlayer(generatePlayer());

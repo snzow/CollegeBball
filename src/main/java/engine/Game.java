@@ -81,7 +81,7 @@ public class Game {
                         counter = 0;
                     }
                 }
-                else if(seed > 2){
+                else if(seed > 3){
                     reboundStat = getReboundMax(counter);
                     reboundSeed = Main.randomNumber(0,reboundStat);
                     if(possession.getPlayer(counter).takeShot(defense.getPlayer(counter),assist,3)){
@@ -214,5 +214,30 @@ public class Game {
     }
 
 
+    private class inGameTeam{
+        Player pg;
+        Player sg;
+        Player sf;
+        Player pf;
+        Player c;
+        ArrayList<Player> bench;
+        Team team;
+
+        int points;
+
+        public inGameTeam(Team team){
+            this.team = team;
+            this.points = 0;
+            this.bench = team.playerList;
+            bench.sort(Comparator.comparing(Player :: getEffectiveShooting).reversed());
+            sg = bench.remove(0);
+
+        }
+
+        public void setLineup(){
+
+
+        }
+    }
 
 }

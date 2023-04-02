@@ -27,6 +27,7 @@ public class Player {
         this.lastName = lastName;
         this.shooting = shooting;
         this.defense = defense;
+        this.passing = passing;
         this.rebounding = rebounding;
         this.gameStats = new PlayerStat(this);
     }
@@ -86,7 +87,10 @@ public class Player {
     }
 
     public int getEffectiveOvr(){
-        return (int) ((((shooting + defense + rebounding + passing)/4.0) * (gameStats.stamina) )/100.0);
+        double total = shooting + passing + rebounding + defense;
+        total = total / 4.0;
+        total = (total *gameStats.stamina) / 100;
+        return (int)total;
     }
 
     public int getPoints(){
