@@ -59,15 +59,14 @@ public class Player {
     }
 
     public boolean takeShot(Player marker, Player assist, int type){
-        double makeShot = Main.randomNumber(0,120);
+        double makeShot = Main.randomNumber(0,125);
         double required = this.getEffectiveShooting() + ((double)marker.getEffectiveDefense()/10);
         if(type == 3){
             required -= 10;
         }
         else if(type == 1){
-            if(makeShot < this.getEffectiveShooting()){
+            if(makeShot < this.getEffectiveShooting() + 17){
                 this.gameStats.shoot(true,type);
-
                 return true;
             }
         }

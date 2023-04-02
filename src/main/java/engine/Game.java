@@ -44,6 +44,7 @@ public class Game {
     public Team playGame(){
         int homePos = 0;
         int awayPos = 0;
+        int turnovers = 0;
 
         Boolean firstPossession = true;
         while(timeLeft > 0){
@@ -90,22 +91,44 @@ public class Game {
                         assist = null;
                     }
                     rand = Main.randomNumber(0,100);
-                    if(rand <= ballCarrier.getEffectivePassing() + 10){
+                    if(rand <= ballCarrier.getEffectivePassing() + 20){
                         ballCarrier = possession.pass(ballCarrier);
                     }
                     else{
+                        turnovers++;
                         changePossession();
                         break;
                     }
                 }
                 else{
                     seed = Main.randomNumber(1,10);
+                    boolean andOne = false;
                     int type = 2;
                     if(seed <= ballTend.getThreeRatio()){
                         type = 3;
                     }
-                    if(ballCarrier.takeShot(defense.getPlayer(ballCarrier.positionForTeam),assist,type)){
+                    Player defender = defense.getPlayer(ballCarrier.getPositionForTeam());
+                    seed = Main.randomNumber(1,defender.defense);
+                    if(seed >= defender.defense - 10){
+                        for(int i = 0; i < type; i++){
+                            if(ballCarrier.takeShot(defender,null,1)){
+                                possession.score(1);
+                            }
+                        }
+                        changePossession();
+                        break;
+
+                    }
+                    else if(seed >= defender.defense -15){
+                        andOne = true;
+                    }
+                    else if(ballCarrier.takeShot(defense.getPlayer(ballCarrier.positionForTeam),assist,type)){
                         possession.score(type);
+                        if(andOne){
+                            if(ballCarrier.takeShot(defender,null,1)){
+                                possession.score(1);
+                            }
+                        }
                         changePossession();
                         break;
                     }
@@ -131,24 +154,24 @@ public class Game {
             }
             home.updateStamina();
             away.updateStamina();
+            if(timeLeft == 1 && home.getPoints() == away.getPoints()){
+                timeLeft = 20;
+            }
             timeLeft--;
 
         }
         homeTeam.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
         awayTeam.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
-        System.out.println("--" + homeTeam.toString() + "--");
-        for(int i = 0; i < homeTeam.playerList.size(); i++){
-            homeTeam.playerList.get(i).gameStats.stamina = 100;
-            System.out.println(homeTeam.playerList.get(i).gameStats.toString());
-            homeTeam.playerList.get(i).gameStats.resetStats();
+        if(home.getPoints() > away.getPoints()){
+            printTeamStats(homeTeam);
+            printTeamStats(awayTeam);
         }
-        System.out.println("--" + awayTeam.toString() + "--");
-        for(int i = 0; i < awayTeam.playerList.size(); i++){
-            awayTeam.playerList.get(i).gameStats.stamina = 100;
-            System.out.println(awayTeam.playerList.get(i).gameStats.toString());
-            awayTeam.playerList.get(i).gameStats.resetStats();
+        else{
+            printTeamStats(awayTeam);
+            printTeamStats(homeTeam);
         }
-        System.out.println("Home pos: " + homePos + " away pos:" + awayPos);
+
+        System.out.println("Home pos: " + homePos + " away pos:" + awayPos + " " + turnovers + "total TO");
         if(home.getPoints() > away.getPoints()){
             System.out.println(homeTeam.toString()+ " defeat the " + awayTeam.toString() + " " + home.getPoints() + " - " + away.getPoints());
             return homeTeam;
@@ -170,6 +193,15 @@ public class Game {
         else{
             possession = home;
             defense = away;
+        }
+    }
+
+    public void printTeamStats(Team team){
+        System.out.println("--" + team.toString() + "--");
+        for(int i = 0; i < team.playerList.size(); i++){
+            team.playerList.get(i).gameStats.stamina = 100;
+            System.out.println(team.playerList.get(i).gameStats.toString());
+            team.playerList.get(i).gameStats.resetStats();
         }
     }
 
@@ -297,6 +329,7 @@ public class Game {
             return points;
         }
     }
+
 
 
 
