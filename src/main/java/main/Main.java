@@ -1,6 +1,7 @@
 package main;
 
 import engine.Game;
+import engine.Position;
 import players.Player;
 import teams.Team;
 
@@ -16,14 +17,26 @@ public class Main {
 
     static ArrayList<String> firstNames;
     static ArrayList<String> lastNames;
-    static HashMap<String,Player> playerMap;
-    static HashMap<Team, Team> teamMap;
-    static ArrayList<Team> teamList;
+    public static HashMap<String,Player> playerMap;
+    public static HashMap<Team, Team> teamMap;
+    public static ArrayList<Team> teamList;
+
+    public static HashMap<String,Position> positions;
+
+    public static ArrayList<Position> positionList;
+
+    public static Position POINT_GUARD;
+
+    public static Position SHOOTING_GUARD;
+    public static Position SMALL_FORWARD;
+    public static Position POWER_FORWARD;
+    public static Position CENTER;
 
     public static void main(String[] args) throws IOException {
-
+        initializePositions();
         initializePlayerGen();
         initializeTeams();
+
 
         teamList.get(0).addPlayer(new Player("Aodhan","Bower",100,90,90,90));
 
@@ -90,6 +103,24 @@ public class Main {
             Team temp = new Team(city,mascot);
             teamMap.put(temp,temp);
             teamList.add(temp);
+        }
+    }
+
+    public static void initializePositions(){
+        positionList = new ArrayList<>();
+        positions = new HashMap<>();
+        positionList.add(new Position("Point Guard","PG",4,7,1));
+        positionList.add(new Position("Shooting Guard","SG",4,3,1));
+        positionList.add(new Position("Small Forward","SF",3,3,2));
+        positionList.add(new Position("Power Forward","PF",2,4,6));
+        positionList.add(new Position("Center","C",1,2,9));
+        POINT_GUARD = positionList.get(0);
+        SHOOTING_GUARD = positionList.get(1);
+        SMALL_FORWARD = positionList.get(2);
+        POWER_FORWARD = positionList.get(3);
+        CENTER = positionList.get(4);
+        for(int i = 0; i < 5; i++){
+            positions.put(positionList.get(i).getShortName(),positionList.get(i));
         }
     }
 

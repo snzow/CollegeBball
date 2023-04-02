@@ -63,6 +63,6 @@ public class PlayerStat {
     }
 
     public String toString(){
-        return player.toString() + " " + player.getEffectiveOvr() + " " + madeShots + "/" + shots + " 3pt: " + madeThrees + "/" + threes + " pts/ast/rb: " + points + "/" + assists + "/" + rebounds;
+        return player.getPositionForTeam().getShortName() + " " + player.toString() + " " + player.getEffectiveOvr() + " " + madeShots + "/" + shots + " 3pt: " + madeThrees + "/" + threes + " pts/ast/rb: " + points + "/" + assists + "/" + rebounds;
     }
 }

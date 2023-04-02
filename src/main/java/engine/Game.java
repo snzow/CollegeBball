@@ -2,63 +2,74 @@ package engine;
 
 import main.Main;
 import players.Player;
+import players.PlayerTendencies;
 import teams.Team;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class Game {
-    public Team home;
-    public Team away;
+    public Team homeTeam;
+    public Team awayTeam;
 
-    public int homeScore;
-    public int awayScore;
+    public InGameTeam home;
+    public InGameTeam away;
+
+    public static Position POINT_GUARD = Main.POINT_GUARD;
+
+    public static Position SHOOTING_GUARD = Main.SHOOTING_GUARD;
+    public static Position SMALL_FORWARD = Main.SMALL_FORWARD;
+    public static Position POWER_FORWARD = Main.POWER_FORWARD;
+    public static Position CENTER = Main.CENTER;
+
 
     public int timeLeft;
-    public Team possession;
-    public Team defense;
+    public InGameTeam possession;
+    public InGameTeam defense;
+    Player ballCarrier;
 
-    int counter;
 
     public Game(Team home, Team away){
-        this.home = home;
-        this.away = away;
-        this.homeScore = 0;
-        this.awayScore = 0;
+        this.homeTeam = home;
+        this.awayTeam = away;
+        this.home = new InGameTeam(homeTeam);
+        this.away = new InGameTeam(awayTeam);
         this.timeLeft = 200;
         possession = null;
-        counter = 0;
+        ballCarrier = null;
     }
 
     public Team playGame(){
         int homePos = 0;
         int awayPos = 0;
-        Boolean firstPossession = true;
-        counter = 0;
-        while(timeLeft > 0){
-            home.makeSubs();
-            away.makeSubs();
 
-            home.updateStamina();
-            away.updateStamina();
+        Boolean firstPossession = true;
+        while(timeLeft > 0){
+            if(timeLeft % 20 == 0){
+                home.sub();
+                away.sub();
+            }
 
             if(firstPossession){
-                double tip = Main.randomNumber(0,1);
-                if(tip == 1){
+                int max = home.courtMap.get(CENTER).rebounding +  away.courtMap.get(CENTER).rebounding;
+                double tip = Main.randomNumber(0,max);
+                if(tip <= home.courtMap.get(CENTER).rebounding){
                     possession = home;
                     defense = away;
+                    ballCarrier = home.getPlayer(POINT_GUARD);
                     homePos ++;
                 }
                 else{
                     possession = away;
                     defense = home;
+                    ballCarrier = away.getPlayer(POINT_GUARD);
                     awayPos++;
                 }
                 firstPossession = false;
             }
             double seed;
-            int reboundSeed;
-            int reboundStat;
             Player assist = null;
             if(possession.equals(home)){
                 homePos++;
@@ -66,91 +77,85 @@ public class Game {
             else{
                 awayPos++;
             }
+            ballCarrier = possession.getPlayer(POINT_GUARD);
             while(true){
-
-                seed = Main.randomNumber(0,10);
-                if(seed == 10){
-                    defense.getPlayer(counter).gameStats.steals++;
-                    changePossession();
-                    break;
-                }
-                else if(seed >= 6){
-                    assist = possession.getPlayer(counter);
-                    incrementCounter();
-                    if(counter > 4){
-                        counter = 0;
-                    }
-                }
-                else if(seed > 3){
-                    reboundStat = getReboundMax(counter);
-                    reboundSeed = Main.randomNumber(0,reboundStat);
-                    if(possession.getPlayer(counter).takeShot(defense.getPlayer(counter),assist,3)){
-                        if(assist != null){
-                            assist.gameStats.assists++;
-                        }
-                        if(possession.equals(home)){
-                            homeScore += 3;
-                        }
-                        else{
-                            awayScore += 3;
-                        }
-                        break;
+                PlayerTendencies ballTend = ballCarrier.tendencies;
+                seed = Main.randomNumber(1,20);
+                if(seed > ballTend.getShotTendency()){
+                    int rand = Main.randomNumber(0,10);
+                    if(rand > 2){
+                        assist = ballCarrier;
                     }
                     else{
-                        if(simRebound(reboundStat,reboundSeed) == true){
-                            break;
-                        }
+                        assist = null;
                     }
-
+                    rand = Main.randomNumber(0,100);
+                    if(rand <= ballCarrier.getEffectivePassing() + 10){
+                        ballCarrier = possession.pass(ballCarrier);
+                    }
+                    else{
+                        changePossession();
+                        break;
+                    }
                 }
                 else{
-                    reboundStat = getReboundMax(counter);
-                    reboundSeed = Main.randomNumber(0,reboundStat);
-                    if(possession.getPlayer(counter).takeShot(defense.getPlayer(counter),assist,2)){
-                        if(assist != null){
-                            assist.gameStats.assists++;
-                        }
-                        if(possession.equals(home)){
-                            homeScore += 2;
-                        }
-                        else{
-                            awayScore += 2;
-                        }
-
+                    seed = Main.randomNumber(1,10);
+                    int type = 2;
+                    if(seed <= ballTend.getThreeRatio()){
+                        type = 3;
+                    }
+                    if(ballCarrier.takeShot(defense.getPlayer(ballCarrier.positionForTeam),assist,type)){
+                        possession.score(type);
+                        changePossession();
                         break;
                     }
                     else{
-                        if(simRebound(reboundStat,reboundSeed) == true){
+                        seed = Main.randomNumber(1,5);
+                        if(seed < 3){
+                            ballCarrier = possession.getRebounder();
+                        }
+                        else{
+                            ballCarrier = defense.getRebounder();
+                            changePossession();
+
+                        }
+                        ballCarrier.rebound();
+                        if(seed > 2){
                             break;
                         }
+
                     }
+
                 }
+
             }
+            home.updateStamina();
+            away.updateStamina();
             timeLeft--;
 
         }
-        home.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
-        away.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
-        System.out.println("--" + home.toString() + "--");
-        for(int i = 0; i < home.maxRosterSize; i++){
-            home.playerList.get(i).gameStats.stamina = 100;
-            System.out.println(home.playerList.get(i).gameStats.toString());
-            home.playerList.get(i).gameStats.resetStats();
+        homeTeam.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
+        awayTeam.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
+        System.out.println("--" + homeTeam.toString() + "--");
+        for(int i = 0; i < homeTeam.playerList.size(); i++){
+            homeTeam.playerList.get(i).gameStats.stamina = 100;
+            System.out.println(homeTeam.playerList.get(i).gameStats.toString());
+            homeTeam.playerList.get(i).gameStats.resetStats();
         }
-        System.out.println("--" + away.toString() + "--");
-        for(int i = 0; i < away.maxRosterSize; i++){
-            away.playerList.get(i).gameStats.stamina = 100;
-            System.out.println(away.playerList.get(i).gameStats.toString());
-            away.playerList.get(i).gameStats.resetStats();
+        System.out.println("--" + awayTeam.toString() + "--");
+        for(int i = 0; i < awayTeam.playerList.size(); i++){
+            awayTeam.playerList.get(i).gameStats.stamina = 100;
+            System.out.println(awayTeam.playerList.get(i).gameStats.toString());
+            awayTeam.playerList.get(i).gameStats.resetStats();
         }
         System.out.println("Home pos: " + homePos + " away pos:" + awayPos);
-        if(homeScore > awayScore){
-            System.out.println(home.toString()+ " defeat the " + away.toString() + " " + homeScore + " - " + awayScore);
-            return home;
+        if(home.getPoints() > away.getPoints()){
+            System.out.println(homeTeam.toString()+ " defeat the " + awayTeam.toString() + " " + home.getPoints() + " - " + away.getPoints());
+            return homeTeam;
         }
         else{
-            System.out.println(away.toString()+ " defeat the " + home.toString() + " "  + awayScore + " - " + homeScore);
-            return away;
+            System.out.println(awayTeam.toString()+ " defeat the " + homeTeam.toString() + " "  + away.getPoints() + " - " + home.getPoints());
+            return awayTeam;
         }
 
 
@@ -168,76 +173,132 @@ public class Game {
         }
     }
 
-    public int getReboundMax(int counter){
-        int reboundStat;
-        if(counter == 4){
-            reboundStat = possession.getPlayer(counter).getEffectiveRebounding() + defense.getPlayer(counter).getEffectiveRebounding()
-                    + defense.playerList.get(0).getEffectiveRebounding();
-        }
-        else{
-            reboundStat = possession.getPlayer(counter).getEffectiveRebounding() + defense.getPlayer(counter).getEffectiveRebounding()
-                    + defense.playerList.get(counter+1).getEffectiveRebounding();
-        }
-        return reboundStat;
-    }
+    private class InGameTeam{
+        Position pg;
+        Position sg;
+        Position sf;
+        Position pf;
+        Position c;
 
-    public void incrementCounter(){
-        counter++;
-        if(counter == 5){
-            counter = 0;
-        }
-    }
-
-    public int nextCounter(){
-        if(counter == 4){
-            return 0;
-        }
-        return counter + 1;
-    }
-
-    public boolean simRebound(int reboundStat, int reboundSeed){
-        if(reboundSeed > reboundStat - possession.getPlayer(counter).getEffectiveRebounding()){
-            possession.getPlayer(counter).rebound();
-            incrementCounter();
-            return false;
-        }
-        else if(reboundSeed > defense.getPlayer(counter).getEffectiveRebounding()){
-            incrementCounter();
-            possession.getPlayer(counter).rebound();
-            changePossession();
-        }
-        else{
-            defense.getPlayer(counter).rebound();
-            changePossession();
-        }
-        return true;
-    }
-
-
-    private class inGameTeam{
-        Player pg;
-        Player sg;
-        Player sf;
-        Player pf;
-        Player c;
+        HashMap<Position, Player> courtMap;
         ArrayList<Player> bench;
         Team team;
 
         int points;
 
-        public inGameTeam(Team team){
+        public InGameTeam(Team team){
             this.team = team;
             this.points = 0;
-            this.bench = team.playerList;
-            bench.sort(Comparator.comparing(Player :: getEffectiveShooting).reversed());
-            sg = bench.remove(0);
+            this.bench = (ArrayList<Player>)team.playerList.clone();
+            team.setDepthCharts();
+            courtMap = new HashMap<>();
+            pg = Main.positions.get("PG");
+            sg = Main.positions.get("SG");
+            sf = Main.positions.get("SF");
+            pf = Main.positions.get("PF");
+            c = Main.positions.get("C");
+            courtMap.put(pg,null);
+            courtMap.put(sg,null);
+            courtMap.put(sf,null);
+            courtMap.put(pf,null);
+            courtMap.put(c,null);
+            sub();
+        }
+
+        public void sub(){
+            team.setDepthCharts();
+            subPosition(pg);
+            subPosition(sg);
+            subPosition(sf);
+            subPosition(pf);
+            subPosition(c);
+        }
+
+        private void subPosition(Position position) {
+            Player prevOnCourt = courtMap.get(position);
+            if(prevOnCourt != null){
+                bench.add(prevOnCourt);
+            }
+            courtMap.put(position,null);
+            List<Player> toEvalList;
+            if(team.getPositionDepthChart(position).size() == 0){
+                toEvalList = bench;
+            }
+            else{
+                toEvalList = team.getPositionDepthChart(position);
+            }
+            int cur = 0;
+            while(courtMap.get(position) == null){
+                if(cur >= toEvalList.size()){
+                    cur = 0;
+                    toEvalList = bench;
+                }
+                Player toEval = toEvalList.get(cur);
+                if(bench.contains(toEval)){
+                    bench.remove(toEval);
+                    courtMap.put(position,toEval);
+                    toEval.positionForTeam = position;
+                    break;
+                }
+                cur++;
+            }
 
         }
 
-        public void setLineup(){
+        public Player getRebounder(){
+            int total = 0;
+            int[] maxes = new int[5];
+            for(int i = 0; i < 5; i++){
+                Player toEval = courtMap.get(Main.positionList.get(i));
+                if(toEval != null){
+                    total += toEval.tendencies.getRbTendency();
+                    maxes[i] = total;
+                }
+            }
+            int seed = Main.randomNumber(0,total);
+            for(int i = 0; i < 5; i++){
+                if(seed <= maxes[i]){
+                    return courtMap.get(Main.positionList.get(i));
+                }
+            }
+            return null;
+        }
+        public void updateStamina(){
+            for(int i = 0; i < 5; i++){
+                courtMap.get(Main.positionList.get(i)).gameStats.stamina--;
+            }
+            for(int i = 0; i < bench.size(); i++){
+                Player p = bench.get(i);
+                if(p.gameStats.stamina < 100){
+                    p.gameStats.stamina += 2;
+                }
+            }
+        }
 
+        public Player getPlayer(Position position){
+            return courtMap.get(position);
+        }
 
+        public Player pass(Player carrier){
+            while(true){
+                int seed = Main.randomNumber(0,4);
+                Position p = Main.positionList.get(seed);
+                if(!p.equals(carrier.position)){
+                    return getPlayer(p);
+                }
+            }
+        }
+
+        public void score(int score){
+            points += score;
+        }
+
+        public int getPoints(){
+            return points;
         }
     }
+
+
+
 
 }

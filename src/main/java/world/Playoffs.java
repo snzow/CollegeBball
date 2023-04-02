@@ -4,6 +4,6 @@ import teams.Team;
 
 import java.util.ArrayList;
 
-public class League {
-    ArrayList<Team> teams;
+public class Playoffs {
+    public ArrayList<Team> teams;
 }
