@@ -25,6 +25,8 @@ public class Team {
     public String mascot;
     public int maxRosterSize;
 
+    public Season season;
+
     public Team(String city, String mascot){
         playerList = new ArrayList<>();
         this.city = city;
@@ -47,6 +49,7 @@ public class Team {
         depthChartList.add(sfDepthChart);
         depthChartList.add(pfDepthChart);
         depthChartList.add(cDepthChart);
+        this.season = new Season();
 
     }
 
@@ -76,6 +79,18 @@ public class Team {
     public ArrayList<Player> getPositionDepthChart(Position position){
         depthMap.get(position).sort(Comparator.comparing(Player :: getEffectiveOvr).reversed());
         return depthMap.get(position);
+    }
+
+    public int getPoints(){
+        return season.getPoints();
+    }
+
+    public int getWins(){
+        return season.wins;
+    }
+
+    public int getLosses(){
+        return season.losses;
     }
 
     public String toString(){

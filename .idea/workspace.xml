@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce629026-6b84-44a7-b11b-564322883531" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/players/GamePerformance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/teams/Season.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FirstNames.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/FirstNames.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/players/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/players/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/players/PlayerStat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/players/PlayerStat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/teams/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/teams/Team.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +93,8 @@
       <workItem from="1680377025809" duration="5595000" />
       <workItem from="1680410323779" duration="4454000" />
       <workItem from="1680454967498" duration="9981000" />
-      <workItem from="1680470377842" duration="2477000" />
+      <workItem from="1680470377842" duration="3349000" />
+      <workItem from="1680501055850" duration="2630000" />
     </task>
     <servers />
   </component>

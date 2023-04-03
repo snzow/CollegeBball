@@ -1,5 +1,7 @@
 package players;
 
+import teams.Team;
+
 public class PlayerStat {
     public int shots;
     public int madeShots;
@@ -76,8 +78,14 @@ public class PlayerStat {
         this.stamina = 100;
     }
 
+    public void endGame(boolean win,Team team, Team opponent){
+        GamePerformance stats = new GamePerformance(shots,madeShots,threes,madeThrees,freeThrows,madeFreeThrows,points,assists,rebounds,steals,blocks,player,win,team,opponent);
+        player.pastPerformances.add(stats);
+        resetStats();
+    }
+
     public String toString(){
-        return player.getPositionForTeam().getShortName() + " " + player.toString() + " " + player.getEffectiveOvr() + " " + madeShots + "/" + shots +
+        return player.getStringBasicPosition() + " " + player.toString() + " " + madeShots + "/" + shots +
                 " 3pt: " + madeThrees + "/" + threes + " ft: " + madeFreeThrows + "/" + freeThrows + " " + points + "/" + assists + "/" + rebounds;
     }
 }

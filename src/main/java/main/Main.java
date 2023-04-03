@@ -11,7 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
 
@@ -57,20 +59,38 @@ public class Main {
             }
         }
 
+        Scanner kb = new Scanner(System.in);
 
 
 
 
+        ArrayList<Game> games = new ArrayList<>();
+        for(int i = 1; i < 4; i++){
+            games.add(new Game(teamList.get(0),teamList.get(i)));
+        }
+        for(int i = 2; i < 4; i++){
+            games.add(new Game(teamList.get(1),teamList.get(i)));
+        }
+        games.add(new Game(teamList.get(2),teamList.get(3)));
+        int cur = 0;
+        while(cur < 4){
+            for(int i = 0; i < games.size(); i++){
+                games.get(i).playGame();
+            }
+            cur++;
+        }
+        teamList.sort(Comparator.comparing(Team :: getPoints).reversed());
+        cur = 1;
+        for(Team t : teamList){
+            System.out.println(cur + ". " + t.toString() + " " + t.getWins() + "-" + t.getLosses());
+            cur++;
+        }
 
 
-        Game game = new Game(teamList.get(0),teamList.get(1));
-        Game game2 = new Game(teamList.get(2),teamList.get(3));
+        for(Player p : teamList.get(0).playerList){
+            p.printPerformances();
+        }
 
-        Team g1w = game.playGame();
-        Team g2w = game2.playGame();
-        Game finals = new Game(g1w,g2w);
-
-        finals.playGame();
     }
 
     public static int randomNumber(int min, int max){

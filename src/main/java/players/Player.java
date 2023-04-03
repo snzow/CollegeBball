@@ -1,7 +1,10 @@
 package players;
 
+import engine.Game;
 import engine.Position;
 import main.Main;
+
+import java.util.ArrayList;
 
 public class Player {
     public String firstName;
@@ -19,6 +22,8 @@ public class Player {
 
     public PlayerStat gameStats;
 
+    public ArrayList<GamePerformance> pastPerformances;
+
     public Player(String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,6 +33,7 @@ public class Player {
         this.rebounding = Main.randomNumber(50,85);
         this.gameStats = new PlayerStat(this);
         setTendencies();
+        pastPerformances = new ArrayList<>();
 
 
     }
@@ -41,6 +47,7 @@ public class Player {
         this.rebounding = rebounding;
         this.gameStats = new PlayerStat(this);
         setTendencies();
+        pastPerformances = new ArrayList<>();
     }
 
     public Player(String firstName, String lastName, int strength){
@@ -52,6 +59,7 @@ public class Player {
         this.rebounding = Main.randomNumber(strength-10,strength + 10);
         this.gameStats = new PlayerStat(this);
         setTendencies();
+        pastPerformances = new ArrayList<>();
     }
 
     public void assist(){
@@ -59,10 +67,10 @@ public class Player {
     }
 
     public boolean takeShot(Player marker, Player assist, int type){
-        double makeShot = Main.randomNumber(0,125);
+        double makeShot = Main.randomNumber(0,120);
         double required = this.getEffectiveShooting() + ((double)marker.getEffectiveDefense()/10);
         if(type == 3){
-            required -= 10;
+            required -= 14;
         }
         else if(type == 1){
             if(makeShot < this.getEffectiveShooting() + 17){
@@ -176,5 +184,51 @@ public class Player {
             return positionForTeam;
         }
         return position;
+    }
+
+    public String getStringBasicPosition(){
+        Position p = position;
+        if(p.equals(Main.POINT_GUARD) || p.equals(Main.SHOOTING_GUARD)){
+            return "G";
+        }
+        else if(p.equals(Main.CENTER)){
+            return "C";
+        }
+        else{
+            return "F";
+        }
+    }
+
+    public void printPerformances(){
+        System.out.println("--" + this + "--");
+        System.out.println("Averages: " + getPpg() + "/" + getApg() + "/" + getRpg());
+        for(GamePerformance g : pastPerformances){
+            System.out.println(g.toString());
+        }
+    }
+
+    public int getPpg(){
+        double total = 0;
+        for(GamePerformance g : pastPerformances){
+            total += g.points;
+        }
+        total = total/pastPerformances.size();
+        return (int)total;
+    }
+    public int getApg(){
+        double total = 0;
+        for(GamePerformance g : pastPerformances){
+            total += g.assists;
+        }
+        total = total/pastPerformances.size();
+        return (int)total;
+    }
+    public int getRpg(){
+        double total = 0;
+        for(GamePerformance g : pastPerformances){
+            total += g.rebounds;
+        }
+        total = total/pastPerformances.size();
+        return (int)total;
     }
 }

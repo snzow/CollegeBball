@@ -119,10 +119,10 @@ public class Game {
                         break;
 
                     }
-                    else if(seed >= defender.defense -15){
-                        andOne = true;
-                    }
                     else if(ballCarrier.takeShot(defense.getPlayer(ballCarrier.positionForTeam),assist,type)){
+                        if(seed >= defender.defense -15){
+                            andOne = true;
+                        }
                         possession.score(type);
                         if(andOne){
                             if(ballCarrier.takeShot(defender,null,1)){
@@ -163,21 +163,27 @@ public class Game {
         homeTeam.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
         awayTeam.playerList.sort(Comparator.comparingInt(Player :: getPoints).reversed());
         if(home.getPoints() > away.getPoints()){
-            printTeamStats(homeTeam);
-            printTeamStats(awayTeam);
+            printTeamStats(homeTeam,awayTeam,true);
+            printTeamStats(awayTeam,homeTeam,false);
         }
         else{
-            printTeamStats(awayTeam);
-            printTeamStats(homeTeam);
+            printTeamStats(awayTeam,homeTeam,true);
+            printTeamStats(homeTeam,awayTeam,false);
         }
 
         System.out.println("Home pos: " + homePos + " away pos:" + awayPos + " " + turnovers + "total TO");
         if(home.getPoints() > away.getPoints()){
             System.out.println(homeTeam.toString()+ " defeat the " + awayTeam.toString() + " " + home.getPoints() + " - " + away.getPoints());
+            reset();
+            homeTeam.season.winGame();
+            awayTeam.season.loseGame();
             return homeTeam;
         }
         else{
             System.out.println(awayTeam.toString()+ " defeat the " + homeTeam.toString() + " "  + away.getPoints() + " - " + home.getPoints());
+            reset();
+            awayTeam.season.winGame();
+            homeTeam.season.loseGame();
             return awayTeam;
         }
 
@@ -196,13 +202,18 @@ public class Game {
         }
     }
 
-    public void printTeamStats(Team team){
+    public void printTeamStats(Team team,Team opponent, Boolean win){
         System.out.println("--" + team.toString() + "--");
         for(int i = 0; i < team.playerList.size(); i++){
-            team.playerList.get(i).gameStats.stamina = 100;
             System.out.println(team.playerList.get(i).gameStats.toString());
-            team.playerList.get(i).gameStats.resetStats();
+            team.playerList.get(i).gameStats.endGame(win,team,opponent);
         }
+    }
+
+    public void reset(){
+        home.clear();
+        away.clear();
+        timeLeft = 200;
     }
 
     private class InGameTeam{
@@ -327,6 +338,10 @@ public class Game {
 
         public int getPoints(){
             return points;
+        }
+
+        public void clear(){
+            points = 0;
         }
     }
 
